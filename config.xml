@@ -104,4 +104,5 @@
         <variable name="APP_NAME" value="Pi95" />
     </plugin>
     <plugin name="cordova-plugin-nativestorage" spec="^2.3.2" />
+    <engine name="android" spec="7.0.0" />
 </widget>

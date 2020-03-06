@@ -15,28 +15,29 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private nativeStorage: NativeStorage,
-    private router: Router
+    // private nativeStorage: NativeStorage,
+    // private router: Router
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.nativeStorage.getItem('facebook_user').then(
-        data => {
-          // user is previously logged and we have his data
-          // we will let him access the app
-          this.router.navigate(['/tabs']);
-          this.splashScreen.hide();
-        },
-        err => {
-          // we don't have the user data so we will ask him to log in
-          this.router.navigate(['/login']);
-          this.splashScreen.hide();
-        }
-      );
+      // this.nativeStorage.getItem('facebook_user').then(
+      //   data => {
+      //     // user is previously logged and we have his data
+      //     // we will let him access the app
+      //     this.router.navigate(['/tabs']);
+      //     this.splashScreen.hide();
+      //   },
+      //   err => {
+      //     // we don't have the user data so we will ask him to log in
+      //     this.router.navigate(['/login']);
+      //     this.splashScreen.hide();
+      //   }
+      // );
       this.statusBar.styleDefault();
+      this.splashScreen.hide();
     });
   }
 }

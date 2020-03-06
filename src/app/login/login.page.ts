@@ -1,71 +1,59 @@
-import { Component } from '@angular/core';
-import { Facebook } from '@ionic-native/facebook/ngx';
+import { Component, OnInit } from '@angular/core';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { Router } from '@angular/router';
-import { NativeStorage } from '@ionic-native/native-storage/ngx';
-import { LoadingController, AlertController, Platform } from '@ionic/angular';
 
+import { LoadingController } from '@ionic/angular';
+import * as firebase from 'firebase';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss']
 })
-export class LoginPage {
-  FB_APP_ID = 645195839628686;
-
+export class LoginPage implements OnInit {
+  loading: any;
   constructor(
-    private fb: Facebook,
-    private nativeStorage: NativeStorage,
-    public loadingController: LoadingController,
     private router: Router,
-    private platform: Platform,
-    public alertController: AlertController
-  ) {}
+    private fb: Facebook,
+    public loadingController: LoadingController,
+    // private fireAuth: AngularFireAuth
+  ) {
 
-  async doFbLogin() {
-    const loading = await this.loadingController.create({
-      message: 'Please wait...'
-    });
-    this.presentLoading(loading);
-    let permissions = new Array<string>();
-
-    // the permissions your facebook app needs from the user
-    permissions = ['public_profile', 'email'];
-
-    this.fb.login(permissions).then(
-      response => {
-        const userId = response.authResponse.userID;
-
-        // Getting name and gender properties
-        this.fb.api('/me?fields=name,email', permissions).then(user => {
-          user.picture =
-            'https://graph.facebook.com/' + userId + '/picture?type=large';
-          // now we have the users info, let's save it in the NativeStorage
-          this.nativeStorage
-            .setItem('facebook_user', {
-              name: user.name,
-              email: user.email,
-              picture: user.picture
-            })
-            .then(
-              () => {
-                this.router.navigate(['/tabs']);
-                loading.dismiss();
-              },
-              error => {
-                console.log(error);
-                loading.dismiss();
-              }
-            );
-        });
-      },
-      error => {
-        console.log(error);
-        loading.dismiss();
-      }
-    );
   }
 
+  async ngOnInit() {
+    this.loading = await this.loadingController.create({
+      message: 'Connecting ...'
+    });
+  }
+
+
   async presentLoading(loading) {
-    return await loading.present();
+    await loading.present();
+  }
+
+
+  async login() {
+
+    this.fb.login(['email'])
+      .then((response: FacebookLoginResponse) => {
+        this.onLoginSuccess(response);
+        console.log(response.authResponse.accessToken);
+      }).catch((error) => {
+        console.log(error);
+        alert('error:' + error);
+      });
+  }
+  onLoginSuccess(res: FacebookLoginResponse) {
+    // const { token, secret } = res;
+    const credential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
+    firebase.auth().signInWithCredential(credential)
+      .then((response) => {
+        this.router.navigate(['/tabs']);
+        this.loading.dismiss();
+      });
+
+  }
+  onLoginError(err) {
+    console.log(err);
   }
 }
