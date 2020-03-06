@@ -1,5 +1,7 @@
 {
   "name": "Pi95",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
