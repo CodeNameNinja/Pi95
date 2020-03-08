@@ -5,30 +5,44 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { Facebook } from '@ionic-native/facebook/ngx';
-import { environment } from '../environments/environment';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginPageModule } from './login/login.module';
+import { UserService } from './user.service';
 
+
+import { JwtModule } from '@auth0/angular-jwt';
+import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './login/login.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+
+
+export function tokenGetter() {
+  return localStorage.getItem('id_token');
+}
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,
+    LoginComponent,
+    DashboardComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
-    AngularFireModule.initializeApp(environment.config),
-    AngularFireAuthModule
+
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter,
+        headerName: 'x-auth-token'
+
+      }
+    })
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
     , NativeStorage,
-    Facebook,
-  
+
+    UserService
+
   ],
   bootstrap: [AppComponent]
 })
