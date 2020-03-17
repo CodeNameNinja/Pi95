@@ -103,4 +103,5 @@
         <variable name="APP_ID" value="645195839628686" />
         <variable name="APP_NAME" value="Pi95" />
     </plugin>
+    <plugin name="cordova-sqlite-storage" spec="^5.0.0" />
 </widget>

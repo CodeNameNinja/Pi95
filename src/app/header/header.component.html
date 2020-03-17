@@ -1,0 +1,34 @@
+
+  <ion-menu side="start" menuId="first" contentId="main">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Profile</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Hi, {{users.name}}</ion-card-subtitle>
+          <ion-card-title>{{users.email}}</ion-card-title>
+        </ion-card-header>
+        <img src="{{users.picture.data.url}}" width="100" alt="{{users.name}}" />
+        <ion-card-content>
+          <p>
+            <ion-button expand="full" color="secondary" (click)="logout()">
+              Logout
+              <ion-icon name="log-out"></ion-icon>
+            </ion-button>
+          </p>
+        </ion-card-content>
+      </ion-card>
+    </ion-content>
+  </ion-menu>
+  
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot = "start">
+        <ion-menu-button color = 'primary'></ion-menu-button>
+      </ion-buttons>
+      <ion-label (click) = selectShip() slot = 'end' color = 'primary' padding style = "font-size: 0.8rem">What ship are you on? </ion-label>
+    </ion-toolbar>
+  </ion-header>

@@ -1,57 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
+import { Component, OnInit, EventEmitter } from '@angular/core';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { User } from '../models/users.model';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  users: User;
   isLoggedIn = false;
-  users = { id: '', name: '', email: '', picture: { data: { url: '' } } };
-  constructor(private fb: Facebook) {
-    fb.getLoginStatus()
-  .then(res => {
-    console.log(res.status);
-    if (res.status === 'connect') {
-      this.isLoggedIn = true;
-    } else {
-      this.isLoggedIn = false;
-    }
-  })
-  .catch(e => console.log(e));
-   }
+  constructor(
+    private authService: AuthenticationService
+    ) {}
 
   ngOnInit() {
+    this.authService.user.subscribe(user => {
+      this.users = user;
+    });
   }
 
   fbLogin() {
-    this.fb.login(['public_profile', 'user_friends', 'email'])
-      .then(res => {
-        if (res.status === 'connected') {
-          this.isLoggedIn = true;
-          this.getUserDetail(res.authResponse.userID);
-        } else {
-          this.isLoggedIn = false;
-        }
-      })
-      .catch(e => console.log('Error logging into Facebook', e));
+   this.authService.fbLogin();
   }
 
   getUserDetail(userid: any) {
-    this.fb.api('/' + userid + '/?fields=id,email,name,picture', ['public_profile'])
-      .then(res => {
-        console.log(res);
-        this.users = res;
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    this.authService.getUserDetail(userid);
   }
 
   logout() {
-    this.fb.logout()
-      .then( res => this.isLoggedIn = false)
-      .catch(e => console.log('Error logout from Facebook', e));
+   this.authService.logout();
   }
 
 }

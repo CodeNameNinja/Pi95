@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title slot = "start">Select</ion-title>
+    <ion-buttons slot="end" (click) = dismiss() padding>
+      <ion-icon name = "close"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-item>
+      <ion-label>I am on vactation?</ion-label>
+      <ion-checkbox [(ngModel)]= 'onVacation' (ionChange) = 'changeBoxState($event)'></ion-checkbox>      
+    </ion-item>
+
+
+    <ion-list>
+      <ion-item [disabled] = 'onVacation'>
+        <ion-label>Select a Ship.</ion-label>
+        <ion-select (ionChange) = 'onSelectShip($event)' [value] = 'selectedShip'>
+        <ion-select-option *ngFor = 'let ship of ships' [value] = 'ship.shipName'>{{ship.shipName}}</ion-select-option>
+      </ion-select>
+      </ion-item>     
+    </ion-list>
+  </ion-content>
