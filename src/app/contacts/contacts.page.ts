@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 import { User } from '../models/users.model';
 import { HttpService } from '../services/http.service';
-
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-contacts',
   templateUrl: 'contacts.page.html',
   styleUrls: ['contacts.page.scss']
 })
-export class ContactsPage implements OnInit {
+export class ContactsPage implements OnInit, OnDestroy {
   // tslint:disable-next-line: max-line-length
-  user = null;
+  user: any;
   contacts: User = {
     friends: {
       data: [
@@ -31,34 +31,41 @@ export class ContactsPage implements OnInit {
     },
 
   };
-
+  watchSub: Subscription;
+  watchHttp: Subscription;
   constructor(
     private authService: AuthenticationService,
     private httpService: HttpService
   ) {}
 
- ngOnInit() {
-   this.authService.user.subscribe(
-     users => {
-      this.contacts = users;
-     });
+  ngOnInit() {
+    this.httpService.getSavedUser();
+    this.watchSub = this.authService.user.subscribe(users => (this.contacts = users));
 
-   this.authService.reloadDetails().then(userId => {
-       this.authService.getUserDetail(userId);
-     });
+    this.authService.reloadDetails().then(userId => {
+      this.authService.getUserDetail(userId);
+    });
 
-   this.httpService.emitUser.subscribe((user) => {
-      this.user = "any";
-     });
- }
-doRefresh(event) {
-  this.authService.reloadDetails().then((userID) => {
-    this.authService.getUserDetail(userID);
-    setTimeout(() => {
-      console.log('Async operation has ended');
-      event.target.complete();
-    }, 2000);
-  });
+    this.watchHttp = this.httpService.emitUser.subscribe((user: any) => {
+      this.user = user;
+      console.log('USER: ' + user);
+    });
+
+    // this.watchSub.add(watchAuthService);
+    // this.watchSub.add(watchHttp);
+  }
+  doRefresh(event) {
+    this.authService.reloadDetails().then(userID => {
+      this.authService.getUserDetail(userID);
+      setTimeout(() => {
+        event.target.complete();
+      }, 2000);
+    });
+  }
+
+  ngOnDestroy() {
+    this.watchSub.unsubscribe();
+    this.watchHttp.unsubscribe();
+  }
 }
 
-}

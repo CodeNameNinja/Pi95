@@ -12,11 +12,11 @@
           <img [src]=contact.picture.data.url alt="contact.name">
         </ion-avatar>
         <ion-label padding style = "font-size: 0.8rem">{{contact.name}}</ion-label>
-        <ion-label *ngIf = 'contact.ship' padding style = "font-size:0.7rem; text-align: end;"  slot = 'end' color = 'dark-tint'>{{contact.ship.name}}</ion-label>
+        <ion-label *ngIf = 'contact.ship' class = "ion-padding" style = "font-size:0.7rem; text-align: end;"  slot = 'end' color = 'dark-tint'>{{contact.ship.name}}</ion-label>
       </ion-item>        
     </ion-list>
-    <p *ngIf="user === null; else displayUser">No user</p>
-    <ng-template #displayUser>Here is a user: <p>{{user}}</p></ng-template>
+    <!-- <p *ngIf="user != null; else displayUser">{{user.name}}</p>
+    <ng-template #displayUser><p>No User: {{user.name}}</p></ng-template> -->
   </ion-content>   
 </ion-app>  
 

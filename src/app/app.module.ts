@@ -14,13 +14,15 @@ import { HeaderComponent } from './header/header.component';
 import { HeaderComponentModule } from './header/header.module';
 import { LazyLoadImageModule, intersectionObserverPreset } from 'ng-lazyload-image';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthenticationService } from './services/authentication.service';
+import { HttpService } from './services/http.service';
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot(), 
+    IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot(),
     HeaderComponentModule,
@@ -32,7 +34,9 @@ import { HttpClientModule } from '@angular/common/http';
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    Facebook
+    Facebook,
+    AuthenticationService,
+    HttpService
   ],
   bootstrap: [AppComponent]
 })

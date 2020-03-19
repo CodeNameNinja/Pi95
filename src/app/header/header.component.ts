@@ -11,11 +11,11 @@ import { SelectShipComponent } from './select-ship/select-ship.component';
 export class HeaderComponent implements OnInit {
   users: User = {
     id: '',
-    name: '', 
-    email:'', 
+    name: '',
+    email: '',
     picture: {
       data: {
-        url:''
+        url: ''
       }
     }
   };
@@ -28,11 +28,9 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     if (this.authService.user) {
       this.authService.user.subscribe(
-        user => {
-          this.users = user;
-        });
+        user => this.users = user
+        );
     }
-
   }
 
   async selectShip() {

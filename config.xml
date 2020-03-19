@@ -104,5 +104,5 @@
         <variable name="APP_NAME" value="Pi95" />
     </plugin>
     <plugin name="cordova-sqlite-storage" spec="^5.0.0" />
-    <allow-navigation href="http://localhost:8100" sessionid="802a258b" />
+    <allow-navigation href="http://localhost:8100" sessionid="1f63a417" />
 </widget>
