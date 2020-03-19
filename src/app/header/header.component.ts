@@ -9,7 +9,17 @@ import { SelectShipComponent } from './select-ship/select-ship.component';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  users: User = {id: '',name: '', email:'', picture: {data: {url:''}} };
+  users: User = {
+    id: '',
+    name: '', 
+    email:'', 
+    picture: {
+      data: {
+        url:''
+      }
+    }
+  };
+
   constructor(
     private authService: AuthenticationService,
     public modalController: ModalController,

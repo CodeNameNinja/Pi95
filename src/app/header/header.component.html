@@ -11,7 +11,8 @@
           <ion-card-subtitle>Hi, {{users.name}}</ion-card-subtitle>
           <ion-card-title>{{users.email}}</ion-card-title>
         </ion-card-header>
-        <img src="{{users.picture.data.url}}" width="100" alt="{{users.name}}" />
+        <img [defaultImage] = "users.picture.data.url"[lazyLoad]="users.picture.data.url" width="50" alt="{{users.name}}" style = "max-width: auto; margin: auto" />
+      
         <ion-card-content>
           <p>
             <ion-button expand="full" color="secondary" (click)="logout()">
@@ -21,6 +22,7 @@
           </p>
         </ion-card-content>
       </ion-card>
+      
     </ion-content>
   </ion-menu>
   

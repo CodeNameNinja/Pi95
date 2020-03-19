@@ -12,16 +12,21 @@ import { AppComponent } from './app.component';
 import { Facebook } from '@ionic-native/facebook/ngx';
 import { HeaderComponent } from './header/header.component';
 import { HeaderComponentModule } from './header/header.module';
-
+import { LazyLoadImageModule, intersectionObserverPreset } from 'ng-lazyload-image';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
+    HttpClientModule,
     IonicModule.forRoot(), 
     AppRoutingModule,
     IonicStorageModule.forRoot(),
-    HeaderComponentModule
+    HeaderComponentModule,
+    LazyLoadImageModule.forRoot({
+      preset: intersectionObserverPreset
+    })
   ],
   providers: [
     StatusBar,

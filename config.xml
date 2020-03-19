@@ -3,7 +3,7 @@
     <name>MyApp</name>
     <description>An App to allow the employees of the Carnival Cruise to know the whereabouts of each other.</description>
     <author email="mwhyuen@gmail.com" href="http://www.forloop.co.za">Forloop team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -104,4 +104,5 @@
         <variable name="APP_NAME" value="Pi95" />
     </plugin>
     <plugin name="cordova-sqlite-storage" spec="^5.0.0" />
+    <allow-navigation href="http://localhost:8100" sessionid="802a258b" />
 </widget>

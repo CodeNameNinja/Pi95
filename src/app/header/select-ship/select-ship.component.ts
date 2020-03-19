@@ -1,19 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { HttpService } from 'src/app/services/http.service';
 @Component({
   selector: 'app-select-ship',
   templateUrl: './select-ship.component.html',
   styleUrls: ['./select-ship.component.scss'],
 })
 export class SelectShipComponent implements OnInit {
-  onVacation = true;
+  onVacation = false;
   selectedShip = '';
-  public form = [
-    { val: 'Pepperoni', isChecked: true },
-    { val: 'Sausage', isChecked: false },
-    { val: 'Mushroom', isChecked: false }
-  ];
+
   ships: any[] = [
     {
       id: 1,
@@ -31,7 +28,8 @@ export class SelectShipComponent implements OnInit {
 
   constructor(
     public modalController: ModalController,
-    private storage: Storage
+    private storage: Storage,
+    private httpService: HttpService
   ) { }
 
   ngOnInit() {
@@ -54,8 +52,10 @@ export class SelectShipComponent implements OnInit {
 
   changeBoxState(event) {
     this.storage.set('boxState', event.target.checked);
+    this.httpService.saveUser(event.target.checked);
   }
   onSelectShip(event) {
     this.storage.set('selectedShip', event.target.value );
+    this.httpService.saveUser(event.target.value);
   }
 }
