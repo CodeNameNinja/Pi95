@@ -63,8 +63,9 @@ export class AuthenticationService implements OnInit {
         ['public_profile']
       )
       .then(res => {
-        this.storage.set('user', JSON.stringify(res));
+        //gets response as JSON string
         this.user.next(res); // is subscribed in header component and in http service
+        this.storage.set('user', res);
       })
       .catch(e => {
         console.log(e);
@@ -81,7 +82,8 @@ export class AuthenticationService implements OnInit {
     return new Promise((resolve, reject) => {
       this.storage.get('user').then(user => {
         if (user !== null || user !== undefined) {
-          resolve(JSON.parse(user));
+          
+          resolve(user);
         } else {
           reject('No User Found');
         }

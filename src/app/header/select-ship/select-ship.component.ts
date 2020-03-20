@@ -52,10 +52,10 @@ export class SelectShipComponent implements OnInit {
 
   changeBoxState(event) {
     this.storage.set('boxState', event.target.checked);
-    // this.httpService.saveUser(event.target.checked);
+    this.httpService.saveUser(event.target.checked);
   }
   onSelectShip(event) {
     this.storage.set('selectedShip', event.target.value );
-    // this.httpService.saveUser(event.target.value);
+    this.httpService.saveUser(event.target.value);
   }
 }

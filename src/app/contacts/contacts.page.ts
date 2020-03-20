@@ -48,7 +48,6 @@ export class ContactsPage implements OnInit, OnDestroy {
 
     this.watchHttp = this.httpService.emitUser.subscribe((user: any) => {
       this.user = user;
-      console.log('USER: ' + user);
     });
 
     // this.watchSub.add(watchAuthService);

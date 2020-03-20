@@ -7,8 +7,10 @@ export interface User {
         url: string
       }
     };
-    ship?: boolean;
-    vacation?: boolean;
+    where?: {
+      ship: string;
+      vacation: boolean;
+    };
     friends?: {
       data: [
         {

@@ -11,7 +11,7 @@
         <ion-avatar>
           <img [src]=contact.picture.data.url alt="contact.name">
         </ion-avatar>
-        <ion-label padding style = "font-size: 0.8rem">{{contact.name}}</ion-label>
+        <ion-label class = "ion-padding" style = "font-size: 0.8rem">{{contact.name}}</ion-label>
         <ion-label *ngIf = 'contact.ship' class = "ion-padding" style = "font-size:0.7rem; text-align: end;"  slot = 'end' color = 'dark-tint'>{{contact.ship.name}}</ion-label>
       </ion-item>        
     </ion-list>
