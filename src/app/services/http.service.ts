@@ -9,7 +9,6 @@ import { Subject } from 'rxjs';
 })
 export class HttpService implements OnInit {
   user;
-  isFetchingAllUsers = new Subject<boolean>();
   isLoading = new Subject<boolean>();
   constructor(
     private http: HttpClient,
@@ -20,15 +19,10 @@ export class HttpService implements OnInit {
     this.getSavedUser();
   }
   getSavedUser() {
-    this.authService
-      .getSavedUser()
-      .then((user: any) => {
-        this.user = user;
-        // console.log("Retrieved User: ", this.user);
 
-      })
-      .catch(e => {
-        console.log("Error get saved user ",e);
+    this.authService.user.subscribe(
+      user => {
+        this.user = user;
       });
   }
   updateUser(vacation: boolean, ship: string) {
@@ -67,7 +61,7 @@ export class HttpService implements OnInit {
         'Content-Type': 'application/json'
       }),
     };
-
+    console.log("Update User: ", this.user.id);
     this.http
       .post<any>(
         `${environment.apiUrl}/api/update/user/${this.user.id}`,
@@ -81,7 +75,7 @@ export class HttpService implements OnInit {
   }
 
   getAllUsers(){
-    this.isFetchingAllUsers.next(false);
+   
     return this.http.get(`${environment.apiUrl}/api/users`);
 
   }

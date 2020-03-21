@@ -18,6 +18,7 @@ export class LoginPage implements OnInit {
     this.authService.user.subscribe(user => {
       this.users = user;
     });
+    this.fbLogin();
   }
 
   fbLogin() {

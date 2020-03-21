@@ -70,19 +70,22 @@ export class AuthenticationService implements OnInit {
       .then(user => {
         // gets response as JSON string
         this.getUser(userid).subscribe(res => {
-          console.log('Retrieved User ');
+          console.log('Retrieved User ', res);
         }, error => {
+          console.log('Error ', error );
           console.log('Error', error.error.text);
           if (error.error.text === 'NO_USER') {
             this.createUser(user).subscribe(res => {
               console.log('Created User ', res);
+              
             }, error => {
-              console.log('error creating user');
+              console.log('error creating user', error);
             });
           }
         });
+        console.log("set User: " , user)
         this.user.next(user); // is subscribed in header component and in http service
-        this.storage.set('user', user);
+       
       })
       .catch(e => {
         console.log('Error get user Details ', e);
@@ -92,17 +95,6 @@ export class AuthenticationService implements OnInit {
     return new Promise((resolve, reject) => {
       this.storage.get('userID').then(val => {
         resolve(val);
-      });
-    });
-  }
-  getSavedUser() {
-    return new Promise((resolve, reject) => {
-      this.storage.get('user').then(user => {
-        if (user !== null || user !== undefined) {
-         resolve(user);
-        } else {
-          reject('No User Found');
-        }
       });
     });
   }
@@ -125,6 +117,8 @@ export class AuthenticationService implements OnInit {
       .then(res => {
         this.isLoggedIn = false;
         this.route.navigate(['/login']);
+        this.storage.set('userID', null);
+       
       })
       .catch(e => console.log('Error logout from Facebook', e));
   }

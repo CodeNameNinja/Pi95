@@ -10,8 +10,7 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['contacts.page.scss']
 })
 export class ContactsPage implements OnInit, OnDestroy {
-  // tslint:disable-next-line: max-line-length
-isLoading = false;
+
   contacts: User[] = [{
     name: 'Mitchell',
     picture: {
@@ -50,9 +49,11 @@ isLoading = false;
   ) {}
 
   ngOnInit() {
-    this.httpService.getSavedUser();
-
-
+    try{
+      this.httpService.getSavedUser();
+    }catch(e){
+      console.log(e)
+    }
     this.authService.reloadDetails().then(userId => {
       this.authService.getUserDetail(userId);
     });
@@ -82,11 +83,11 @@ isLoading = false;
 
   getAllUsers() {
     this.httpService.getAllUsers().subscribe((users: User[]) => {
-      this.isLoading = true;
-      if (this.isLoading) {
-        this.presentLoading();
-      }
-      this.contacts = users;
+      // this.isLoading = true;
+      // if (this.isLoading) {
+      //   this.presentLoading();
+      // }
+      this.contacts = [...users]
     }, error => {
       console.log('cant get users...' , error);
     });
