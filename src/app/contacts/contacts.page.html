@@ -7,12 +7,12 @@
       </ion-refresher-content>
     </ion-refresher>
     <ion-list>
-      <ion-item *ngFor = 'let contact of contacts.friends.data'>
+      <ion-item *ngFor = 'let contact of contacts'>
         <ion-avatar>
           <img [src]=contact.picture.data.url alt="contact.name">
         </ion-avatar>
         <ion-label class = "ion-padding" style = "font-size: 0.8rem">{{contact.name}}</ion-label>
-        <ion-label *ngIf = 'contact.ship' class = "ion-padding" style = "font-size:0.7rem; text-align: end;"  slot = 'end' color = 'dark-tint'>{{contact.ship.name}}</ion-label>
+        <ion-label *ngIf = 'contact.where.ship' class = "ion-padding" style = "font-size:0.7rem; text-align: end;"  slot = 'end' color = 'dark-tint'>{{contact.where.ship}}</ion-label>
       </ion-item>        
     </ion-list>
     <!-- <p *ngIf="user != null; else displayUser">{{user.name}}</p>

@@ -1,6 +1,6 @@
 import { Injectable, OnInit, EventEmitter } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { User } from '../models/users.model';
 import { AuthenticationService } from './authentication.service';
 import { Subject } from 'rxjs';
@@ -9,7 +9,8 @@ import { Subject } from 'rxjs';
 })
 export class HttpService implements OnInit {
   user;
-  emitUser = new Subject<any>();
+  isFetchingAllUsers = new Subject<boolean>();
+  isLoading = new Subject<boolean>();
   constructor(
     private http: HttpClient,
     private authService: AuthenticationService
@@ -23,25 +24,25 @@ export class HttpService implements OnInit {
       .getSavedUser()
       .then((user: any) => {
         this.user = user;
+        // console.log("Retrieved User: ", this.user);
 
-        this.emitUser.next(this.user);
       })
       .catch(e => {
-        this.emitUser.next(e);
+        console.log("Error get saved user ",e);
       });
   }
-  saveUser(event: any) {
-    console.log("EVENT: ", event)
-    if (event !== true || event !== false) {
+  updateUser(vacation: boolean, ship: string) {
+    this.isLoading.next(false);
+    if (vacation === false) {
       const where = {
         where: {
-          ship: event,
+          ship,
           vacation: false
         }
       };
       this.user = Object.assign(this.user, where);
     }
-    if (event === undefined) {
+    if (vacation === undefined && ship === undefined) {
       const where = {
         where: {
           ship: null,
@@ -50,34 +51,39 @@ export class HttpService implements OnInit {
       };
       this.user = Object.assign(this.user, where);
     }
-    if (event === true || event === false) {
+    if (vacation === true) {
       const where = {
         where: {
           ship: null,
-          vacation: event
+          vacation: true
         }
       };
       this.user = Object.assign(this.user, where);
     }
-    console.log('After User Object is assign new values: ', this.user.where);
+    // console.log('After User Object is assign new values: ', this.user.where);
 
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
-      })
+      }),
     };
 
     this.http
       .post<any>(
-        `${environment.apiUrl}/api/users`,
-        {
-          id: this.user.id,
-          user: this.user
-        },
+        `${environment.apiUrl}/api/update/user/${this.user.id}`,
+        this.user,
         httpOptions
       )
       .subscribe(res => {
+        this.isLoading.next(true);
         console.log(res);
       });
   }
+
+  getAllUsers(){
+    this.isFetchingAllUsers.next(false);
+    return this.http.get(`${environment.apiUrl}/api/users`);
+
+  }
+
 }
